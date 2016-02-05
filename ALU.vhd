@@ -1,7 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
 --use ieee.std_logic_arith.all;
---use ieee.std_logic_unsigned.all;
 use ieee.numeric_std.all;
 
 entity ALU is
@@ -42,12 +41,21 @@ constant LOGICAL_SHIFT_RIGHT : unsigned(3 downto 0) := "1100";
 
 
 begin
---inputs to intermidiate signals
-temp_data0_in <= DATA0;
-temp_data1_in <= DATA1;
-temp_opcode <= OPCODE;
 
---intermidiate signals to outputs
+process (CLK)
+
+begin
+
+	if (CLK'EVENT AND CLK = '1') then
+	--inputs to intermidiate signals at the rising edge of the clock to ensure that ALU gets the correct
+	--inputs and the correct operation code
+			temp_data0_in <= DATA0;
+			temp_data1_in <= DATA1;
+			temp_opcode   <= OPCODE;
+	end if;
+end process;
+
+--intermidiate registers to outputs
 STATUS <= temp_status;
 DATA_OUT <= temp_data_out;
 
